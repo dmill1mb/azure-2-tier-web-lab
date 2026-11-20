@@ -355,3 +355,12 @@ az group exists -n rg-lab02-<yourname>
 | SSH says `Permission denied (publickey)` | The server answered, so the network and firewall are fine. The server rejected the key you offered. Check that you are using the key file downloaded for this server. If you have two files with similar names, try the other one. |
 | I cannot SSH to `vm-db-01` from my computer | This is expected. It has no public IP. Connect to `vm-web-01` first. |
 
+## What this lab teaches
+
+- **A tier is a layer, and each layer gets its own zone.** The web server sits in a public subnet with a public IP address. The database server sits in a private subnet with none. That one difference is why the internet can reach the first and not the second.
+- **Private means no public address.** `vm-db-01` has no public IP, so you cannot SSH to it from your computer. You connect to `vm-web-01` first and reach it from there. That is what a jump host does.
+- **Subnets are slices of a network.** `vnet-lab02` is one network with two ranges, `10.0.0.0/24` and `10.0.1.0/24`. Azure keeps the first four addresses of each subnet, so the first server gets `.4`.
+- **Firewall rules have an order, and the defaults matter.** Rules are checked from the lowest priority number up, and the first match wins. Every network security group has built-in rules, and AllowVnetInBound at priority 65000 already lets in traffic from anywhere inside the virtual network. So the allow rule at 100 locked nothing by itself. The deny rule at 200 closes the gap, and the ping in Step 8 shows the web server still gets through.
+- **Check the real settings, not the form.** A port box showed 8080, the HTTP rule was missing, and a key file with a similar name was the wrong one. Each was found by running a check, not by trusting the form.
+- **A virtual machine is IaaS (Infrastructure as a Service).** You rent the machine and look after everything on it. [Lab 03](https://github.com/dmill1mb/Modernize-to-SQL-PaaS) replaces the database server with a managed service to show the difference.
+- **Clean up and protect your keys.** Deleting the resource group removes everything the lab built, and `az group exists` proves it. The `.pem` private key stays out of Git, and you delete it when the server is gone.
