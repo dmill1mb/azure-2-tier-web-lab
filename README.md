@@ -355,9 +355,3 @@ az group exists -n rg-lab02-<yourname>
 | SSH says `Permission denied (publickey)` | The server answered, so the network and firewall are fine. The server rejected the key you offered. Check that you are using the key file downloaded for this server. If you have two files with similar names, try the other one. |
 | I cannot SSH to `vm-db-01` from my computer | This is expected. It has no public IP. Connect to `vm-web-01` first. |
 
-## What this lab does not do
-
-- It does not lock down SSH on the web server. The portal warns that choosing SSH (22) allows every IP address to try it, and says that is only recommended for testing. Outside a lab, limit port 22 to your own address in the network security group.
-- It does not install a web server or a database. The servers only prove the network layout, so nothing here serves a web page.
-- It does not test a machine outside the web subnet being blocked. That needs a third machine in another subnet.
-- It does not open an SSH session from the web server to the database server. That needs the key on the web server or an agent to carry it, and copying a private key onto a server is a bad habit.
